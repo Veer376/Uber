@@ -1,6 +1,8 @@
 const userModel=require('../models/user.models')
 const userService=require('../services/user.service')
 const {validationResult} = require('express-validator')
+const jwt=require('jsonwebtoken')
+const blacklistedTokenModel=require('../models/blacklistToken.models')
 
 module.exports.registerUser =async (req, res, next) => {
     const errors=validationResult(req)
@@ -18,7 +20,7 @@ module.exports.registerUser =async (req, res, next) => {
     const token=user.generateAuthToken()
     console.log('failed here ')
     res.status(201).json({user, token})
-}
+} 
 module.exports.loginUser=async (req, res, next) => {
     const errors=validationResult(req)
     if(!errors.isEmpty()){
@@ -40,4 +42,16 @@ module.exports.loginUser=async (req, res, next) => {
     const token=user.generateAuthToken()
     res.status(200).json({user, token})
 
-}
+} 
+module.exports.getUserProfile=async(req, res, next)=>{
+    res.status(200).json({user: req.user})
+} 
+module.exports.logoutUser = async (req, res, next) => {
+    res.clearCookie('token');
+    const token = req.cookies.token || req.header('Authorization')?.split(' ')[1];
+    if (!token) {
+        return res.status(400).json({ message: 'No token provided' });
+    }
+    await blacklistedTokenModel.create({ token });
+    res.status(200).json({ message: 'Logged out successfully' });
+};
