@@ -34,3 +34,38 @@
 
 - `email`: String, required. The user's email address.
 - `password`: String, required. The user's password.
+### Example Response for Register a New User
+
+**Response:**
+
+```json
+{
+    "user": {
+        "_id": "uniqueUserId",
+        "fullname": {
+            "firstname": "John",
+            "lastname": "Doe"
+        },
+        "email": "john.doe@example.com"
+    },
+    "token": "generatedAuthToken"
+}
+```
+
+### Example Response for User Login
+
+**Response:**
+
+```json
+{
+    "user": {
+        "_id": "uniqueUserId",
+        "fullname": {
+            "firstname": "John",
+            "lastname": "Doe"
+        },
+        "email": "john.doe@example.com"
+    },
+    "token": "generatedAuthToken"
+}
+```
